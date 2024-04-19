@@ -1,4 +1,8 @@
-import { defineAuth } from '@aws-amplify/backend';
+import { defineAuth, defineFunction } from "@aws-amplify/backend";
+
+export const preTokenGeneration = defineFunction({
+  entry: "pre-token-generation.ts",
+});
 
 /**
  * Define and configure your auth resource
@@ -40,5 +44,8 @@ export const auth = defineAuth({
     //   mutable: true,
     //   required: false,
     // },
+  },
+  triggers: {
+    preTokenGeneration,
   },
 });

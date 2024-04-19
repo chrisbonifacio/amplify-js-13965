@@ -27,7 +27,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "amplify/data/increment-like.ts",
-    "amplify/functions/rest-auth"
+    "amplify/functions/rest-auth",
+    "amplify/data/getPost.js",
+    "amplify/data/addPost.js"
   ],
   "exclude": ["node_modules"]
 }
