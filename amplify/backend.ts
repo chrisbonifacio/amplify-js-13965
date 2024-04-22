@@ -44,8 +44,6 @@ const eventBusRole = new Role(eventStack, "AppSyncInvokeRole", {
   },
 });
 
-// eventBusRole.roleName;
-
 const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
   eventBusName: eventBus.eventBusName,
   name: "broadcastOrderStatusChange",
