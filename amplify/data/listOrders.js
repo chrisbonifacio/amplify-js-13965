@@ -1,8 +1,5 @@
 export function request(ctx) {
-  return {
-    operation: "PutEvents",
-    events: [{}],
-  };
+  return "noop";
 }
 
 export function response(ctx) {

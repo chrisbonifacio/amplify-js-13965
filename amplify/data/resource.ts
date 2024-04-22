@@ -20,7 +20,7 @@ const schema = a.schema({
       message: a.string().required(),
     })
     .returns(a.ref("OrderStatusChange"))
-    .authorization([a.allow.public(), a.allow.private("iam")])
+    .authorization([a.allow.public()])
     .handler(
       a.handler.custom({
         dataSource: "EventBridgeDataSource",
@@ -40,13 +40,14 @@ const schema = a.schema({
         entry: "./onOrderStatusChange.js",
       })
     ),
+  // We need at least one query in the schema to deploy the API
   listOrderEvents: a
     .query()
     .returns(a.ref("Order").array())
     .authorization([a.allow.public()])
     .handler(
       a.handler.custom({
-        dataSource: "EventBridgeDataSource",
+        dataSource: "NONE_DS",
         entry: "./listOrders.js",
       })
     ),
