@@ -1,7 +1,6 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
-import { preTokenGeneration } from "./auth/resource";
 import { aws_events } from "aws-cdk-lib";
 import {
   Effect,
@@ -14,7 +13,6 @@ import {
 export const backend = defineBackend({
   auth,
   data,
-  preTokenGeneration,
 });
 
 const eventStack = backend.createStack("MyExternalDataSources");
