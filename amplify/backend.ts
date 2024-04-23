@@ -68,11 +68,11 @@ const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
   eventPattern: {
     source: ["amplify.orders"],
     ["detail-type"]: ["OrderStatusChange"],
-    // detail: {
-    //   orderId: [{ exists: true }],
-    //   status: ["PENDING", "SHIPPED", "DELIVERED"],
-    //   message: [{ exists: true }],
-    // },
+    detail: {
+      orderId: [{ exists: true }],
+      status: ["PENDING", "SHIPPED", "DELIVERED"],
+      message: [{ exists: true }],
+    },
   },
   targets: [
     {
