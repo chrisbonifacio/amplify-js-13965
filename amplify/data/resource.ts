@@ -15,7 +15,7 @@ const schema = a.schema({
       message: a.string(),
     })
     .returns(a.ref("OrderStatusChange"))
-    .authorization((allow) => [allow.publicApiKey()])
+    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
     .handler(
       a.handler.custom({
         dataSource: "EventBridgeDataSource",
@@ -40,10 +40,10 @@ const schema = a.schema({
   onOrderStatusChange: a
     .subscription()
     .for(a.ref("publishOrderFromEventBridge"))
-    .authorization((allow) => [allow.publicApiKey()])
+    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
     .handler(
       a.handler.custom({
-        dataSource: "NONE_DS",
+        dataSource: "NoneDataSource",
         entry: "./onOrderStatusChange.js",
       })
     ),
