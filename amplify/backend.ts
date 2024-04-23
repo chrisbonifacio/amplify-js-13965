@@ -42,15 +42,17 @@ const eventBusRole = new Role(eventStack, "AppSyncInvokeRole", {
   },
 });
 
+// eventBusRole.roleName;
+
 const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
   eventBusName: eventBus.eventBusName,
   name: "broadcastOrderStatusChange",
   eventPattern: {
     source: ["amplify.orders"],
-    detailType: ["OrderStatusChange"],
+    ["detail-type"]: ["OrderStatusChange"],
     detail: {
       orderId: [{ exists: true }],
-      status: ["OrderPending", "OrderShipped", "OrderDelivered"],
+      status: ["PENDING", "SHIPPED", "DELIVERED"],
       message: [{ exists: true }],
     },
   },
@@ -62,12 +64,12 @@ const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
       roleArn: eventBusRole.roleArn,
       appSyncParameters: {
         graphQlOperation: `
-        mutation UpdateOrderStatus(
+        mutation PublishOrderFromEventBridge(
           $orderId: String!
           $status: String!
           $message: String!
         ) {
-          updateOrderStatus(orderId: $orderId, status: $status, message: $message) {
+          publishOrderFromEventBridge(orderId: $orderId, status: $status, message: $message) {
             orderId
             status
             message

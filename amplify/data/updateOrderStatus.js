@@ -1,16 +1,11 @@
 export function request(ctx) {
   return {
-    operation: "PutEvents",
-    events: [
-      {
-        source: "amplify.orders",
-        detailType: "OrderStatusChange",
-        detail: { ...ctx.args },
-      },
-    ],
+    payload: {
+      ...ctx.args,
+    },
   };
 }
 
 export function response(ctx) {
-  return ctx.args;
+  return ctx.result.input;
 }

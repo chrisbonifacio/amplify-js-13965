@@ -1,39 +1,46 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  OrderStatus: a.enum(["OrderPending", "OrderShipped", "OrderDelivered"]),
-  Order: a.customType({
-    id: a.id().required(),
-    status: a.ref("OrderStatus").required(),
-  }),
+  OrderStatus: a.enum(["PENDING", "SHIPPED", "DELIVERED"]),
   OrderStatusChange: a.customType({
-    orderId: a.id().required(),
-    status: a.ref("OrderStatus").required(),
-    message: a.string().required(),
-    __typename: a.string(),
+    orderId: a.id(),
+    status: a.ref("OrderStatus"),
+    message: a.string(),
   }),
-  updateOrderStatus: a
+  publishOrderToEventBridge: a
     .mutation()
     .arguments({
-      orderId: a.string().required(),
-      status: a.string().required(),
-      message: a.string().required(),
+      orderId: a.id(),
+      status: a.string(),
+      message: a.string(),
     })
     .returns(a.ref("OrderStatusChange"))
-    .authorization([a.allow.public()])
+    .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
         dataSource: "EventBridgeDataSource",
+        entry: "./publishOrderToEventBridge.js",
+      })
+    ),
+  publishOrderFromEventBridge: a
+    .mutation()
+    .arguments({
+      orderId: a.id(),
+      status: a.string(),
+      message: a.string(),
+    })
+    .returns(a.ref("OrderStatusChange"))
+    .authorization((allow) => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "NONE_DS",
         entry: "./updateOrderStatus.js",
       })
     ),
   onOrderStatusChange: a
     .subscription()
-    .arguments({
-      orderId: a.id(),
-    })
-    .for(a.ref("updateOrderStatus"))
-    .authorization([a.allow.public()])
+    .for(a.ref("publishOrderFromEventBridge"))
+    .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
         dataSource: "NONE_DS",
@@ -41,14 +48,14 @@ const schema = a.schema({
       })
     ),
   // We need at least one query in the schema to deploy the API
-  listOrderEvents: a
+  noop: a
     .query()
-    .returns(a.ref("Order").array())
-    .authorization([a.allow.public()])
+    .returns(a.string())
+    .authorization((allow) => [allow.publicApiKey()])
     .handler(
       a.handler.custom({
         dataSource: "NONE_DS",
-        entry: "./listOrders.js",
+        entry: "./noop.js",
       })
     ),
 });
