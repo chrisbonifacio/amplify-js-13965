@@ -30,11 +30,11 @@ const schema = a.schema({
       message: a.string(),
     })
     .returns(a.ref("OrderStatusChange"))
-    .authorization((allow) => [allow.publicApiKey()])
+    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
     .handler(
       a.handler.custom({
         dataSource: "NONE_DS",
-        entry: "./updateOrderStatus.js",
+        entry: "./publishOrderFromEventBridge.js",
       })
     ),
   onOrderStatusChange: a

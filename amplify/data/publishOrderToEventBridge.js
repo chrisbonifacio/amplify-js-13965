@@ -5,12 +5,12 @@ export function request(ctx) {
       {
         source: "amplify.orders",
         detailType: "OrderStatusChange",
-        detail: { ...ctx.args },
+        detail: { ...ctx.arguments },
       },
     ],
   };
 }
 
 export function response(ctx) {
-  return ctx.args;
+  return ctx.arguments;
 }

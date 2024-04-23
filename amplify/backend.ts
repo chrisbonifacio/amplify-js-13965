@@ -42,8 +42,6 @@ const eventBusRole = new Role(eventStack, "AppSyncInvokeRole", {
   },
 });
 
-// eventBusRole.roleName;
-
 const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
   eventBusName: eventBus.eventBusName,
   name: "broadcastOrderStatusChange",
@@ -65,7 +63,7 @@ const rule = new aws_events.CfnRule(eventStack, "MyOrderRule", {
       appSyncParameters: {
         graphQlOperation: `
         mutation PublishOrderFromEventBridge(
-          $orderId: String!
+          $orderId: ID!
           $status: String!
           $message: String!
         ) {

@@ -1,11 +1,9 @@
 export function request(ctx) {
   return {
-    payload: {
-      ...ctx.args,
-    },
+    payload: ctx.arguments,
   };
 }
 
 export function response(ctx) {
-  return ctx.result.input;
+  return ctx.result;
 }
