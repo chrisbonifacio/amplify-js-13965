@@ -37,14 +37,14 @@ const schema = a.schema({
         entry: "./publishOrderFromEventBridge.js",
       })
     ),
-  onOrderStatusChange: a
+  onOrderFromEventBridge: a
     .subscription()
     .for(a.ref("publishOrderFromEventBridge"))
     .authorization((allow) => [allow.publicApiKey(), allow.guest()])
     .handler(
       a.handler.custom({
         dataSource: "NoneDataSource",
-        entry: "./onOrderStatusChange.js",
+        entry: "./onOrderFromEventBridge.js",
       })
     ),
   // We need at least one query in the schema to deploy the API
