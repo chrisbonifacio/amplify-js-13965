@@ -1,8 +1,5 @@
 "use client";
-import { Amplify } from "aws-amplify";
-import config from "@/amplifyconfiguration.json";
-
-Amplify.configure(config, { ssr: true });
+import "@/app/globals.css";
 
 export default function RootLayout({
   children,

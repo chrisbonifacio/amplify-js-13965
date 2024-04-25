@@ -1,70 +1,27 @@
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import {
+  type ClientSchema,
+  a,
+  defineData,
+  defineFunction,
+} from "@aws-amplify/backend";
+
+export const generateFunction = defineFunction({
+  entry: "./generate-haiku.ts",
+});
 
 const schema = a.schema({
-  OrderStatus: a.enum(["PENDING", "SHIPPED", "DELIVERED"]),
-  OrderStatusChange: a.customType({
-    orderId: a.id(),
-    status: a.ref("OrderStatus"),
-    message: a.string(),
-  }),
-  publishOrderToEventBridge: a
-    .mutation()
-    .arguments({
-      orderId: a.id(),
-      status: a.string(),
-      message: a.string(),
-    })
-    .returns(a.ref("OrderStatusChange"))
-    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
-    .handler(
-      a.handler.custom({
-        dataSource: "EventBridgeDataSource",
-        entry: "./publishOrderToEventBridge.js",
-      })
-    ),
-  publishOrderFromEventBridge: a
-    .mutation()
-    .arguments({
-      orderId: a.id(),
-      status: a.string(),
-      message: a.string(),
-    })
-    .returns(a.ref("OrderStatusChange"))
-    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
-    .handler(
-      a.handler.custom({
-        dataSource: "NONE_DS",
-        entry: "./publishOrderFromEventBridge.js",
-      })
-    ),
-  onOrderFromEventBridge: a
-    .subscription()
-    .for(a.ref("publishOrderFromEventBridge"))
-    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
-    .handler(
-      a.handler.custom({
-        dataSource: "NoneDataSource",
-        entry: "./onOrderFromEventBridge.js",
-      })
-    ),
-  // We need at least one query in the schema to deploy the API
-  noop: a
+  generate: a
     .query()
+    .arguments({ prompt: a.string().required() })
     .returns(a.string())
     .authorization((allow) => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "NONE_DS",
-        entry: "./noop.js",
-      })
-    ),
+    .handler(a.handler.function(generateFunction)),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
-  name: "MyLibrary",
   authorizationModes: {
     defaultAuthorizationMode: "apiKey",
     apiKeyAuthorizationMode: {
