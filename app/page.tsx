@@ -7,7 +7,7 @@ import { Schema } from "@/amplify/data/resource";
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 
-Amplify.configure(config, { ssr: true });
+Amplify.configure(config);
 
 const client = generateClient<Schema>();
 
@@ -18,7 +18,7 @@ export default function App() {
   const sendPrompt = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { data, errors } = await client.queries.generate({
+    const { data, errors } = await client.queries.generateHaiku({
       prompt,
     });
 

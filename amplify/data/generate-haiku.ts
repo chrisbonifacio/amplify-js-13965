@@ -3,12 +3,12 @@ import {
   BedrockRuntimeClient,
   InvokeModelCommand,
   InvokeModelCommandInput,
-} from "@aws-sdk/client-bedrock-runtime"; // ES Modules import
+} from "@aws-sdk/client-bedrock-runtime";
 
 // initialize bedrock runtime client
 const client = new BedrockRuntimeClient();
 
-export const handler: Schema["generate"]["functionHandler"] = async (
+export const handler: Schema["generateHaiku"]["functionHandler"] = async (
   event,
   context
 ) => {
@@ -17,7 +17,7 @@ export const handler: Schema["generate"]["functionHandler"] = async (
 
   // Invoke model
   const input = {
-    modelId: "anthropic.claude-3-haiku-20240307-v1:0",
+    modelId: process.env.MODEL_ID as string,
     contentType: "application/json",
     accept: "application/json",
     body: JSON.stringify({

@@ -5,7 +5,7 @@ export function request(ctx) {
   const prompt = ctx.args.prompt;
 
   return {
-    resourcePath: "/model/anthropic.claude-3-haiku-20240307-v1:0/invoke",
+    resourcePath: `/model/${process.env.MODEL_ID}/invoke`,
     method: "POST",
     params: {
       headers: {
