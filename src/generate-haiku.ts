@@ -1,4 +1,4 @@
-import type { Schema } from "./resource";
+import type { Schema } from "../amplify/data/resource";
 import {
   BedrockRuntimeClient,
   InvokeModelCommand,
@@ -17,7 +17,7 @@ export const handler: Schema["generateHaiku"]["functionHandler"] = async (
 
   // Invoke model
   const input = {
-    modelId: process.env.MODEL_ID as string,
+    modelId: process.env.MODEL_ID,
     contentType: "application/json",
     accept: "application/json",
     body: JSON.stringify({

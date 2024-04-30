@@ -1,29 +1,17 @@
-import {
-  type ClientSchema,
-  a,
-  defineData,
-  defineFunction,
-} from "@aws-amplify/backend";
-
-export const generateHaikuFunction = defineFunction({
-  entry: "./generate-haiku.ts",
-  environment: {
-    MODEL_ID: process.env.MODEL_ID as string,
-  },
-});
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  Todo: a
-    .model({
-      list: a.json().array(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
   generateHaiku: a
     .query()
     .arguments({ prompt: a.string().required() })
     .returns(a.string())
     .authorization((allow) => [allow.publicApiKey()])
-    .handler(a.handler.function(generateHaikuFunction)),
+    .handler(
+      a.handler.custom({
+        dataSource: "BedrockDataSource",
+        entry: "./generateHaiku.js",
+      })
+    ),
 });
 
 export type Schema = ClientSchema<typeof schema>;

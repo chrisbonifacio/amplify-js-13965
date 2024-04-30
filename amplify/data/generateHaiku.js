@@ -5,7 +5,7 @@ export function request(ctx) {
   const prompt = ctx.args.prompt;
 
   return {
-    resourcePath: `/model/${process.env.MODEL_ID}/invoke`,
+    resourcePath: `/model/${ctx.env.MODEL_ID}/invoke`,
     method: "POST",
     params: {
       headers: {
