@@ -1,0 +1,58 @@
+{
+  "auth": {
+    "user_pool_id": "us-east-1_hnZKUUOjT",
+    "aws_region": "us-east-1",
+    "user_pool_client_id": "2jnt06lc6i5lm96pk5ivhl5r0",
+    "identity_pool_id": "us-east-1:ab798ea5-085f-4529-aa64-866349b549c5",
+    "standard_required_attributes": [
+      "email"
+    ],
+    "username_attributes": [
+      "email"
+    ],
+    "user_verification_types": [
+      "email"
+    ],
+    "password_policy": {
+      "min_length": 8,
+      "require_numbers": true,
+      "require_lowercase": true,
+      "require_uppercase": true,
+      "require_symbols": true
+    },
+    "unauthenticated_identities_enabled": true
+  },
+  "data": {
+    "url": "https://evr6rlxkxndovirqlxvcmrxpeq.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_region": "us-east-1",
+    "api_key": "da2-7wnbwpaj2fewxdcnxrbj67kff4",
+    "default_authorization_type": "API_KEY",
+    "authorization_types": [
+      "AMAZON_COGNITO_USER_POOLS",
+      "AWS_IAM"
+    ],
+    "model_introspection": {
+      "version": 1,
+      "models": {},
+      "enums": {},
+      "nonModels": {},
+      "queries": {
+        "generateHaiku": {
+          "name": "generateHaiku",
+          "isArray": false,
+          "type": "String",
+          "isRequired": false,
+          "arguments": {
+            "prompt": {
+              "name": "prompt",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "version": "1"
+}
