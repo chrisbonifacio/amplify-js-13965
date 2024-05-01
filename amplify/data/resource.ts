@@ -1,26 +1,13 @@
-import {
-  type ClientSchema,
-  a,
-  defineData,
-  defineFunction,
-} from "@aws-amplify/backend";
-
-const generateHaikuFunction = defineFunction({
-  entry: "generateHaiku.ts",
-});
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  Todo: a
+  Song: a
     .model({
-      content: a.string().required(),
+      id: a.id().required(),
+      name: a.string().required(),
+      coverArtPath: a.string(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
-  generateHaiku: a
-    .query()
-    .arguments({ prompt: a.string().required() })
-    .returns(a.string())
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(a.handler.function(generateHaikuFunction)),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -29,6 +16,7 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: "apiKey",
+
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
     },
