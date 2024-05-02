@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_hnZKUUOjT",
+    "user_pool_id": "us-east-1_sNiljtR8Z",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "2jnt06lc6i5lm96pk5ivhl5r0",
-    "identity_pool_id": "us-east-1:ab798ea5-085f-4529-aa64-866349b549c5",
+    "user_pool_client_id": "2o154nrm5jdq00ldg2vhvh486l",
+    "identity_pool_id": "us-east-1:7ba2ea08-0fba-43f9-b44a-d0c8bbe68925",
     "standard_required_attributes": [
       "email"
     ],
@@ -34,8 +34,8 @@
     "model_introspection": {
       "version": 1,
       "models": {
-        "Song": {
-          "name": "Song",
+        "Todo": {
+          "name": "Todo",
           "fields": {
             "id": {
               "name": "id",
@@ -44,15 +44,8 @@
               "isRequired": true,
               "attributes": []
             },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "coverArtPath": {
-              "name": "coverArtPath",
+            "content": {
+              "name": "content",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -76,27 +69,21 @@
             }
           },
           "syncable": true,
-          "pluralName": "Songs",
+          "pluralName": "Todos",
           "attributes": [
             {
               "type": "model",
               "properties": {}
             },
             {
-              "type": "key",
-              "properties": {
-                "fields": [
-                  "id"
-                ]
-              }
-            },
-            {
               "type": "auth",
               "properties": {
                 "rules": [
                   {
-                    "allow": "public",
-                    "provider": "apiKey",
+                    "provider": "userPools",
+                    "ownerField": "owners",
+                    "allow": "owner",
+                    "identityClaim": "cognito:username",
                     "operations": [
                       "create",
                       "update",
@@ -118,10 +105,6 @@
       "enums": {},
       "nonModels": {}
     }
-  },
-  "storage": {
-    "aws_region": "us-east-1",
-    "bucket_name": "amplify-amplifygen2app-cb-amplifygen2filesbucketd3-01oqe8xwbbc8"
   },
   "version": "1"
 }
