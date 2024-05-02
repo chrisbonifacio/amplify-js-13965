@@ -119,5 +119,9 @@
       "nonModels": {}
     }
   },
+  "storage": {
+    "aws_region": "us-east-1",
+    "bucket_name": "amplify-amplifygen2app-cb-amplifygen2filesbucketd3-01oqe8xwbbc8"
+  },
   "version": "1"
 }

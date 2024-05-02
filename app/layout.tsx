@@ -1,5 +1,5 @@
 "use client";
-import "@/app/globals.css";
+import "@/app/App.css";
 
 export default function RootLayout({
   children,
