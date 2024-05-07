@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_sNiljtR8Z",
+    "user_pool_id": "us-east-1_qCXqT75ho",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "2o154nrm5jdq00ldg2vhvh486l",
-    "identity_pool_id": "us-east-1:7ba2ea08-0fba-43f9-b44a-d0c8bbe68925",
+    "user_pool_client_id": "2to2spbj1uj5enijl489ko5emp",
+    "identity_pool_id": "us-east-1:578666d5-68d8-4efd-b67e-60e02d92e538",
     "standard_required_attributes": [
       "email"
     ],
@@ -23,12 +23,12 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://evr6rlxkxndovirqlxvcmrxpeq.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://kcsnuutb5bezdi3idpv6y4audy.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "api_key": "da2-7wnbwpaj2fewxdcnxrbj67kff4",
-    "default_authorization_type": "API_KEY",
+    "api_key": "da2-dtwtplnudfe3hg5fcswqg55uka",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
-      "AMAZON_COGNITO_USER_POOLS",
+      "API_KEY",
       "AWS_IAM"
     ],
     "model_introspection": {
@@ -48,6 +48,22 @@
               "name": "content",
               "isArray": false,
               "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "done": {
+              "name": "done",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": {
+                "enum": "TodoStatus"
+              },
               "isRequired": false,
               "attributes": []
             },
@@ -80,10 +96,81 @@
               "properties": {
                 "rules": [
                   {
-                    "provider": "userPools",
-                    "ownerField": "owners",
-                    "allow": "owner",
-                    "identityClaim": "cognito:username",
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "Impression": {
+          "name": "Impression",
+          "fields": {
+            "videoId": {
+              "name": "videoId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "impressions": {
+              "name": "impressions",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Impressions",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "videoId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
                     "operations": [
                       "create",
                       "update",
@@ -105,15 +192,51 @@
             }
           ],
           "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "videoId",
             "sortKeyFieldNames": []
           }
         }
       },
-      "enums": {},
-      "nonModels": {}
+      "enums": {
+        "TodoStatus": {
+          "name": "TodoStatus",
+          "values": [
+            "ACTIVE",
+            "COMPLETED"
+          ]
+        }
+      },
+      "nonModels": {},
+      "mutations": {
+        "increaseImpression": {
+          "name": "increaseImpression",
+          "isArray": false,
+          "type": {
+            "model": "Impression"
+          },
+          "isRequired": false,
+          "arguments": {
+            "videoId": {
+              "name": "videoId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "count": {
+              "name": "count",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            }
+          }
+        }
+      }
     }
+  },
+  "storage": {
+    "aws_region": "us-east-1",
+    "bucket_name": "amplify-amplifygen2app-cb-myprojectfilesbucket89ac-yzbinlmp91kt"
   },
   "version": "1"
 }

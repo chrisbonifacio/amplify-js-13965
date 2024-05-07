@@ -1,78 +1,46 @@
 "use client";
-
-import "./App.css";
-import { generateClient } from "aws-amplify/api";
-import React, { useState } from "react";
-import type { Schema } from "../amplify/data/resource";
+import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import {
-  type WithAuthenticatorProps,
-  withAuthenticator,
-} from "@aws-amplify/ui-react";
-import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
+import { client } from "@/utils/amplifyServerUtils";
 
-Amplify.configure(outputs);
+import { signInWithRedirect } from "aws-amplify/auth";
 
-type Todo = Schema["Todo"]["type"];
+// ...
 
-function App({ signOut, user }: WithAuthenticatorProps) {
-  // Generating the client
-  const client = generateClient<Schema>({
-    authMode: "userPool",
+try {
+  await signInWithRedirect({
+    provider: "Apple",
   });
+} catch (error) {
+  console.log("error signing up:", error);
+}
 
-  const [todo, setTodo] = useState<Todo>();
+// configure Amplify
 
-  const addOwners = async () => {
-    // Add another user as an owner
-    if (todo) {
-      const { data, errors } = await client.models.Todo.update(
-        {
-          id: todo?.id,
-          authors: [...(todo?.authors as string[]), "another-user-id"],
-        },
-
-        {
-          authMode: "userPool",
-        }
-      );
-
-      if (!errors) {
-        console.log(data);
-      } else {
-        console.log(errors);
-      }
-    }
-  };
-
+// Require Authentication for users to view child content
+const App = () => {
   const createTodo = async () => {
-    const { errors, data: newTodo } = await client.models.Todo.create(
-      {
-        content: "My new todo",
-      },
+    const { data, errors } = await client.models.Todo.create({
+      content: "Do something",
+    });
 
-      {
-        authMode: "userPool",
-      }
-    );
-
-    if (!errors && newTodo) {
-      setTodo(newTodo);
-      console.log(newTodo);
-    } else {
-      console.log(errors);
-    }
+    console.log({ data });
   };
 
   return (
-    <div>
-      <h1>Hello {user?.username}</h1>
-      <button onClick={signOut}>Sign out</button>
-      <button onClick={createTodo}>Create Todo</button>
-      <button onClick={addOwners}>Add Owners</button>
-    </div>
+    <Authenticator>
+      {({ user, signOut }) => {
+        return (
+          <>
+            <h1>Hello {user?.username}</h1>
+            <h1>Protected content!</h1>
+            <button onClick={signOut}>Sign out</button>
+            <button onClick={createTodo}>Create Todo</button>
+          </>
+        );
+      }}
+    </Authenticator>
   );
-}
+};
 
-export default withAuthenticator(App);
+export default App;
