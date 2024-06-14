@@ -1,28 +1,52 @@
 "use client";
 import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
 import { client } from "@/utils/amplifyServerUtils";
+import { fetchAuthSession } from "aws-amplify/auth";
 
-import { signInWithRedirect } from "aws-amplify/auth";
+import "@aws-amplify/ui-react/styles.css";
+import { uploadData } from "aws-amplify/storage";
+import { Schema } from "@/amplify/data/resource";
 
-// ...
+type Todo = Schema["Todo"]["type"];
 
-try {
-  await signInWithRedirect({
-    provider: "Apple",
-  });
-} catch (error) {
-  console.log("error signing up:", error);
-}
-
-// configure Amplify
-
-// Require Authentication for users to view child content
 const App = () => {
+  const listTodos = async () => {
+    const session = await fetchAuthSession();
+
+    let groups = session.tokens?.accessToken.payload["cognito:groups"];
+
+    console.log({ groups });
+
+    const { data: todo, errors } = await client.models.Todo.();
+
+    if (errors) {
+      // ...handle error
+    } else {
+      console.log(todo);
+    }
+  };
+
   const createTodo = async () => {
     const { data, errors } = await client.models.Todo.create({
-      content: "Do something",
+      content: "Hello world!",
     });
+
+    if (errors) {
+      console.error({ errors });
+    }
+
+    console.log({ data });
+  };
+
+  const updateTodo = async () => {
+    const { data, errors } = await client.models.Todo.update({
+      id: "123",
+      content: "Hello world!",
+    });
+
+    if (errors) {
+      console.error({ errors });
+    }
 
     console.log({ data });
   };
@@ -35,7 +59,7 @@ const App = () => {
             <h1>Hello {user?.username}</h1>
             <h1>Protected content!</h1>
             <button onClick={signOut}>Sign out</button>
-            <button onClick={createTodo}>Create Todo</button>
+            <button onClick={listTodos}>List Todos</button>
           </>
         );
       }}

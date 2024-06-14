@@ -1,9 +1,10 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_qCXqT75ho",
+    "user_pool_id": "us-east-1_NpEZsYSy7",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "2to2spbj1uj5enijl489ko5emp",
-    "identity_pool_id": "us-east-1:578666d5-68d8-4efd-b67e-60e02d92e538",
+    "user_pool_client_id": "38l9dof1ma5l77mgkiphpl78ih",
+    "identity_pool_id": "us-east-1:4ae9b7d0-989c-4d3f-ae55-fd7ce2028d75",
+    "mfa_methods": [],
     "standard_required_attributes": [
       "email"
     ],
@@ -13,6 +14,7 @@
     "user_verification_types": [
       "email"
     ],
+    "mfa_configuration": "OFF",
     "password_policy": {
       "min_length": 8,
       "require_numbers": true,
@@ -23,13 +25,13 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://kcsnuutb5bezdi3idpv6y4audy.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://m5y3ijpo7rhw3gsjczbg3z3ida.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "api_key": "da2-dtwtplnudfe3hg5fcswqg55uka",
-    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
+    "api_key": "da2-g53ptjuq7zdthkfelbvlfcrvxi",
+    "default_authorization_type": "AWS_IAM",
     "authorization_types": [
       "API_KEY",
-      "AWS_IAM"
+      "AMAZON_COGNITO_USER_POOLS"
     ],
     "model_introspection": {
       "version": 1,
@@ -48,22 +50,6 @@
               "name": "content",
               "isArray": false,
               "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "done": {
-              "name": "done",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false,
-              "attributes": []
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": {
-                "enum": "TodoStatus"
-              },
               "isRequired": false,
               "attributes": []
             },
@@ -92,75 +78,12 @@
               "properties": {}
             },
             {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "allow": "public",
-                    "provider": "apiKey",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "Impression": {
-          "name": "Impression",
-          "fields": {
-            "videoId": {
-              "name": "videoId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "impressions": {
-              "name": "impressions",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "Impressions",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
               "type": "key",
               "properties": {
+                "name": "todosByContent",
+                "queryField": "listTodoByContent",
                 "fields": [
-                  "videoId"
+                  "content"
                 ]
               }
             },
@@ -179,7 +102,8 @@
                     ]
                   },
                   {
-                    "allow": "private",
+                    "allow": "public",
+                    "provider": "iam",
                     "operations": [
                       "create",
                       "update",
@@ -192,51 +116,35 @@
             }
           ],
           "primaryKeyInfo": {
-            "isCustomPrimaryKey": true,
-            "primaryKeyFieldName": "videoId",
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
           }
         }
       },
-      "enums": {
-        "TodoStatus": {
-          "name": "TodoStatus",
-          "values": [
-            "ACTIVE",
-            "COMPLETED"
-          ]
-        }
-      },
-      "nonModels": {},
-      "mutations": {
-        "increaseImpression": {
-          "name": "increaseImpression",
-          "isArray": false,
-          "type": {
-            "model": "Impression"
-          },
-          "isRequired": false,
-          "arguments": {
-            "videoId": {
-              "name": "videoId",
+      "enums": {},
+      "nonModels": {
+        "Prop": {
+          "name": "Prop",
+          "fields": {
+            "test": {
+              "name": "test",
               "isArray": false,
               "type": "String",
-              "isRequired": false
+              "isRequired": false,
+              "attributes": []
             },
-            "count": {
-              "name": "count",
+            "name": {
+              "name": "name",
               "isArray": false,
-              "type": "Int",
-              "isRequired": false
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
             }
           }
         }
       }
     }
-  },
-  "storage": {
-    "aws_region": "us-east-1",
-    "bucket_name": "amplify-amplifygen2app-cb-myprojectfilesbucket89ac-yzbinlmp91kt"
   },
   "version": "1"
 }
