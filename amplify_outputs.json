@@ -25,9 +25,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://m5y3ijpo7rhw3gsjczbg3z3ida.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://xotatyfbhfczbihpdnjhhvz674.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "api_key": "da2-g53ptjuq7zdthkfelbvlfcrvxi",
+    "api_key": "da2-lnqls5fonzamjaepho62cul6ie",
     "default_authorization_type": "AWS_IAM",
     "authorization_types": [
       "API_KEY",
@@ -120,6 +120,106 @@
             "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
           }
+        },
+        "UserProfile": {
+          "name": "UserProfile",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "firstName": {
+              "name": "firstName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "lastName": {
+              "name": "lastName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "AWSEmail",
+              "isRequired": true,
+              "attributes": []
+            },
+            "birthdate": {
+              "name": "birthdate",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "location": {
+              "name": "location",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "UserProfiles",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "private",
+                    "provider": "iam",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
         }
       },
       "enums": {},
@@ -140,6 +240,54 @@
               "type": "String",
               "isRequired": false,
               "attributes": []
+            }
+          }
+        }
+      },
+      "mutations": {
+        "CreatingUserProfile": {
+          "name": "CreatingUserProfile",
+          "isArray": false,
+          "type": {
+            "model": "UserProfile"
+          },
+          "isRequired": false,
+          "arguments": {
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "firstName": {
+              "name": "firstName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "lastName": {
+              "name": "lastName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "AWSEmail",
+              "isRequired": true
+            },
+            "birthdate": {
+              "name": "birthdate",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true
+            },
+            "location": {
+              "name": "location",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
             }
           }
         }

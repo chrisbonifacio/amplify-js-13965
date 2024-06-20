@@ -1,28 +1,11 @@
-import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
-import { Project, StructureKind } from "ts-morph";
+import {
+  a,
+  defineData,
+  defineFunction,
+  type ClientSchema,
+} from "@aws-amplify/backend";
 
-// define a schema for a todo app that only allows signed users to view
-
-// type Todo @model
-//   @auth(rules: [
-//      { allow: public, provider: apiKey }
-//      { allow: public, provider: iam }
-//   ]) {
-//   id: ID!
-//   name: String!
-//   description: String
-//   createdAt: String
-//   updatedAt: String
-//   prop: Prop
-// }
-
-// type Prop {
-//   test: String
-//   name: String
-//     @auth(rules: [
-//       { allow: public, provider: apiKey }
-//     ])
-// }
+const myFunction = defineFunction();
 
 const schema = a.schema({
   Prop: a.customType({
@@ -39,6 +22,34 @@ const schema = a.schema({
         // @ts-ignore
         .queryField(null),
     ]),
+  UserProfile: a
+    .model({
+      owner: a.string().required(),
+      firstName: a.string().required(),
+      lastName: a.string().required(),
+      email: a.email().required(),
+      birthdate: a.datetime().required(),
+      location: a.string(),
+    })
+    .authorization((allow) => [allow.authenticated("identityPool")]),
+  CreatingUserProfile: a
+    .mutation()
+    .arguments({
+      owner: a.string().required(),
+      firstName: a.string().required(),
+      lastName: a.string().required(),
+      email: a.email().required(),
+      birthdate: a.datetime().required(),
+      location: a.string(),
+    })
+    .returns(a.ref("UserProfile"))
+    .handler([
+      a.handler.custom({
+        entry: "./handler.ts",
+        dataSource: a.ref("UserProfile"),
+      }),
+    ])
+    .authorization((allow) => [allow.authenticated("identityPool")]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -47,7 +58,7 @@ export const data = defineData({
   schema,
   name: "TestAPI",
   authorizationModes: {
-    defaultAuthorizationMode: "identityPool",
+    defaultAuthorizationMode: "apiKey",
     apiKeyAuthorizationMode: {
       expiresInDays: 365,
     },
