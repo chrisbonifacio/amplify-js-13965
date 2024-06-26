@@ -25,9 +25,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://xotatyfbhfczbihpdnjhhvz674.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://hm5lhk3czzfgdow2lmrrno4qqq.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "api_key": "da2-lnqls5fonzamjaepho62cul6ie",
+    "api_key": "da2-fgai2v4hiva5rd2jhxqqzsmhmu",
     "default_authorization_type": "AWS_IAM",
     "authorization_types": [
       "API_KEY",
@@ -36,8 +36,8 @@
     "model_introspection": {
       "version": 1,
       "models": {
-        "Todo": {
-          "name": "Todo",
+        "Customer": {
+          "name": "Customer",
           "fields": {
             "id": {
               "name": "id",
@@ -46,8 +46,45 @@
               "isRequired": true,
               "attributes": []
             },
-            "content": {
-              "name": "content",
+            "fullName": {
+              "name": "fullName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "AWSEmail",
+              "isRequired": false,
+              "attributes": []
+            },
+            "phone": {
+              "name": "phone",
+              "isArray": false,
+              "type": "AWSPhone",
+              "isRequired": false,
+              "attributes": []
+            },
+            "billingInformation": {
+              "name": "billingInformation",
+              "isArray": false,
+              "type": {
+                "model": "BillingInformation"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "HAS_ONE",
+                "associatedWith": [
+                  "customerId"
+                ],
+                "targetNames": []
+              }
+            },
+            "owner": {
+              "name": "owner",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -71,39 +108,21 @@
             }
           },
           "syncable": true,
-          "pluralName": "Todos",
+          "pluralName": "Customers",
           "attributes": [
             {
               "type": "model",
               "properties": {}
             },
             {
-              "type": "key",
-              "properties": {
-                "name": "todosByContent",
-                "queryField": "listTodoByContent",
-                "fields": [
-                  "content"
-                ]
-              }
-            },
-            {
               "type": "auth",
               "properties": {
                 "rules": [
                   {
-                    "allow": "public",
-                    "provider": "apiKey",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  },
-                  {
-                    "allow": "public",
-                    "provider": "iam",
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "identityClaim": "cognito:username",
                     "operations": [
                       "create",
                       "update",
@@ -121,8 +140,8 @@
             "sortKeyFieldNames": []
           }
         },
-        "UserProfile": {
-          "name": "UserProfile",
+        "BillingInformation": {
+          "name": "BillingInformation",
           "fields": {
             "id": {
               "name": "id",
@@ -131,43 +150,65 @@
               "isRequired": true,
               "attributes": []
             },
+            "customerId": {
+              "name": "customerId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "customer": {
+              "name": "customer",
+              "isArray": false,
+              "type": {
+                "model": "Customer"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "customerId"
+                ]
+              }
+            },
+            "identityCard": {
+              "name": "identityCard",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "companyName": {
+              "name": "companyName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "address": {
+              "name": "address",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "city": {
+              "name": "city",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "municipality": {
+              "name": "municipality",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "owner": {
               "name": "owner",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "firstName": {
-              "name": "firstName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "lastName": {
-              "name": "lastName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "email": {
-              "name": "email",
-              "isArray": false,
-              "type": "AWSEmail",
-              "isRequired": true,
-              "attributes": []
-            },
-            "birthdate": {
-              "name": "birthdate",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": true,
-              "attributes": []
-            },
-            "location": {
-              "name": "location",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -191,7 +232,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "UserProfiles",
+          "pluralName": "BillingInformations",
           "attributes": [
             {
               "type": "model",
@@ -202,8 +243,94 @@
               "properties": {
                 "rules": [
                   {
-                    "allow": "private",
-                    "provider": "iam",
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "identityClaim": "cognito:username",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "Message": {
+          "name": "Message",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "roomId": {
+              "name": "roomId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Messages",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "messagesByRoomIdAndCreatedAt",
+                "queryField": "listByDate",
+                "fields": [
+                  "roomId",
+                  "createdAt"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "identityClaim": "cognito:username",
                     "operations": [
                       "create",
                       "update",
@@ -223,75 +350,7 @@
         }
       },
       "enums": {},
-      "nonModels": {
-        "Prop": {
-          "name": "Prop",
-          "fields": {
-            "test": {
-              "name": "test",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        }
-      },
-      "mutations": {
-        "CreatingUserProfile": {
-          "name": "CreatingUserProfile",
-          "isArray": false,
-          "type": {
-            "model": "UserProfile"
-          },
-          "isRequired": false,
-          "arguments": {
-            "owner": {
-              "name": "owner",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "firstName": {
-              "name": "firstName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "lastName": {
-              "name": "lastName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "email": {
-              "name": "email",
-              "isArray": false,
-              "type": "AWSEmail",
-              "isRequired": true
-            },
-            "birthdate": {
-              "name": "birthdate",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": true
-            },
-            "location": {
-              "name": "location",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        }
-      }
+      "nonModels": {}
     }
   },
   "version": "1"

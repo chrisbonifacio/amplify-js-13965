@@ -1,55 +1,37 @@
-import {
-  a,
-  defineData,
-  defineFunction,
-  type ClientSchema,
-} from "@aws-amplify/backend";
-
-const myFunction = defineFunction();
+import { a, defineData, type ClientSchema } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  Prop: a.customType({
-    test: a.string(),
-    name: a.string().authorization((allow) => [allow.publicApiKey()]),
-  }),
-  Todo: a
+  Customer: a
     .model({
-      content: a.string(),
+      fullName: a.string(),
+      email: a.email(),
+      phone: a.phone(),
+      billingInformation: a.hasOne("BillingInformation", "customerId"),
+      owner: a.string(),
     })
-    .authorization((allow) => [allow.publicApiKey(), allow.guest()])
+    .authorization((allow) => [allow.owner()]),
+  BillingInformation: a
+    .model({
+      customerId: a.id(),
+      customer: a.belongsTo("Customer", "customerId"),
+      identityCard: a.string(),
+      companyName: a.string(),
+      address: a.string(),
+      city: a.string(),
+      municipality: a.string(),
+      owner: a.string(),
+    })
+    .authorization((allow) => [allow.owner()]),
+  Message: a
+    .model({
+      roomId: a.id().required(),
+      createdAt: a.datetime(),
+      content: a.string().required(),
+    })
     .secondaryIndexes((index) => [
-      index("content")
-        // @ts-ignore
-        .queryField(null),
-    ]),
-  UserProfile: a
-    .model({
-      owner: a.string().required(),
-      firstName: a.string().required(),
-      lastName: a.string().required(),
-      email: a.email().required(),
-      birthdate: a.datetime().required(),
-      location: a.string(),
-    })
-    .authorization((allow) => [allow.authenticated("identityPool")]),
-  CreatingUserProfile: a
-    .mutation()
-    .arguments({
-      owner: a.string().required(),
-      firstName: a.string().required(),
-      lastName: a.string().required(),
-      email: a.email().required(),
-      birthdate: a.datetime().required(),
-      location: a.string(),
-    })
-    .returns(a.ref("UserProfile"))
-    .handler([
-      a.handler.custom({
-        entry: "./handler.ts",
-        dataSource: a.ref("UserProfile"),
-      }),
+      index("roomId").sortKeys(["createdAt"]).queryField("listByDate"),
     ])
-    .authorization((allow) => [allow.authenticated("identityPool")]),
+    .authorization((allow) => [allow.owner()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -58,7 +40,7 @@ export const data = defineData({
   schema,
   name: "TestAPI",
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
+    defaultAuthorizationMode: "identityPool",
     apiKeyAuthorizationMode: {
       expiresInDays: 365,
     },

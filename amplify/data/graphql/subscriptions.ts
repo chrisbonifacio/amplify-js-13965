@@ -8,7 +8,8 @@ type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCreateImpression = /* GraphQL */ `subscription OnCreateImpression(
+export const onCreateImpression =
+  /* GraphQL */ `subscription OnCreateImpression(
   $filter: ModelSubscriptionImpressionFilterInput
 ) {
   onCreateImpression(filter: $filter) {
@@ -20,10 +21,11 @@ export const onCreateImpression = /* GraphQL */ `subscription OnCreateImpression
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnCreateImpressionSubscriptionVariables,
-  APITypes.OnCreateImpressionSubscription
->;
-export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
+    APITypes.OnCreateImpressionSubscriptionVariables,
+    APITypes.OnCreateImpressionSubscription
+  >;
+export const onCreateTodo =
+  /* GraphQL */ `subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
   onCreateTodo(filter: $filter) {
     content
     createdAt
@@ -35,10 +37,11 @@ export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo($filter: Mo
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnCreateTodoSubscriptionVariables,
-  APITypes.OnCreateTodoSubscription
->;
-export const onDeleteImpression = /* GraphQL */ `subscription OnDeleteImpression(
+    APITypes.OnCreateTodoSubscriptionVariables,
+    APITypes.OnCreateTodoSubscription
+  >;
+export const onDeleteImpression =
+  /* GraphQL */ `subscription OnDeleteImpression(
   $filter: ModelSubscriptionImpressionFilterInput
 ) {
   onDeleteImpression(filter: $filter) {
@@ -50,10 +53,11 @@ export const onDeleteImpression = /* GraphQL */ `subscription OnDeleteImpression
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnDeleteImpressionSubscriptionVariables,
-  APITypes.OnDeleteImpressionSubscription
->;
-export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
+    APITypes.OnDeleteImpressionSubscriptionVariables,
+    APITypes.OnDeleteImpressionSubscription
+  >;
+export const onDeleteTodo =
+  /* GraphQL */ `subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
   onDeleteTodo(filter: $filter) {
     content
     createdAt
@@ -65,10 +69,11 @@ export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo($filter: Mo
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnDeleteTodoSubscriptionVariables,
-  APITypes.OnDeleteTodoSubscription
->;
-export const onUpdateImpression = /* GraphQL */ `subscription OnUpdateImpression(
+    APITypes.OnDeleteTodoSubscriptionVariables,
+    APITypes.OnDeleteTodoSubscription
+  >;
+export const onUpdateImpression =
+  /* GraphQL */ `subscription OnUpdateImpression(
   $filter: ModelSubscriptionImpressionFilterInput
 ) {
   onUpdateImpression(filter: $filter) {
@@ -80,10 +85,11 @@ export const onUpdateImpression = /* GraphQL */ `subscription OnUpdateImpression
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnUpdateImpressionSubscriptionVariables,
-  APITypes.OnUpdateImpressionSubscription
->;
-export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
+    APITypes.OnUpdateImpressionSubscriptionVariables,
+    APITypes.OnUpdateImpressionSubscription
+  >;
+export const onUpdateTodo =
+  /* GraphQL */ `subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
   onUpdateTodo(filter: $filter) {
     content
     createdAt
@@ -95,6 +101,6 @@ export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo($filter: Mo
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnUpdateTodoSubscriptionVariables,
-  APITypes.OnUpdateTodoSubscription
->;
+    APITypes.OnUpdateTodoSubscriptionVariables,
+    APITypes.OnUpdateTodoSubscription
+  >;
