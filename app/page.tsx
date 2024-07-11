@@ -9,11 +9,12 @@ import { Schema } from "@/amplify/data/resource";
 const client = generateClient<Schema>();
 
 const App = () => {
-  const createMessage = async () => {
-    const { data, errors } = await client.models.Message.create({
-      roomId: "123",
-      content: "Hello",
-    });
+  const create = async () => {
+    const { data, errors } =
+      await client.models.Record.listRecordByLotIdAndTimestamp({
+        lotId: "1",
+        timestamp: 1,
+      });
 
     console.log({ data, errors });
   };
