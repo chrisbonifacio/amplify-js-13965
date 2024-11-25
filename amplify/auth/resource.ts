@@ -6,4 +6,5 @@ export const auth = defineAuth({
       verificationEmailSubject: "Welcome to Amplify 🚀",
     },
   },
+  groups: ["ADMIN"],
 });

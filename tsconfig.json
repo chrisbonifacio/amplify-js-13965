@@ -31,7 +31,7 @@
     "amplify/functions/rest-auth",
     "amplify/data/getPost.js",
     "amplify/data/addPost.js",
-    "amplify/data/handler.js"
+    "amplify/data/handler.ts"
   ],
   "exclude": ["node_modules"]
 }
